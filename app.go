@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
@@ -13,41 +12,49 @@ import (
 func main() {
 	a := app.New()
 	w := a.NewWindow("Calculator")
-	w.Resize(fyne.NewSize(400, 320))
+	w.Resize(fyne.NewSize(300, 500))
 
-	label1 := widget.NewLabel("Enter a first number: ")
-	entry1 := widget.NewEntry()
+	title := widget.NewLabel("Order placement")
 
-	label2 := widget.NewLabel("Enter a second number: ")
-	entry2 := widget.NewEntry()
+	nameLabel := widget.NewLabel("Your name:")
+	name:= widget.NewEntry()
 
-	answer := widget.NewLabel("")
+	foodLabel := widget.NewLabel("Choice a food for order")
+	food := widget.NewCheckGroup([]string{"Pizza", "Cake", "Nuggets", "Burger", "Coca-Cola"}, func([]string) {})
 
-	btn := widget.NewButton("Calculate", func() {
-		n1, err1 := strconv.ParseFloat(entry1.Text, 64)
-		n2, err2 := strconv.ParseFloat(entry2.Text, 64)
+	genderLabel := widget.NewLabel("Your gender:")
+	gender := widget.NewRadioGroup([]string{"Male", "Female"}, func(s string) {})
 
-		if err1 != nil || err2 != nil {
-			answer.SetText("Validation error!")
-			return
+	result := widget.NewLabel("")
+
+	btn := widget.NewButton("Order", func() {
+		username := name.Text
+		selectedFoods := food.Selected
+		selectedGender := gender.Selected
+
+		parsedSelectedFoods := ""
+		for i, foodEl := range selectedFoods {
+			if i + 1 == len(selectedFoods) {
+				parsedSelectedFoods += foodEl
+				break
+			}
+			parsedSelectedFoods += foodEl + ", "
 		}
 
-		sum := n1 + n2
-		sub := n1 - n2
-		mul := n1 * n2
-		div := n1 / n2
-
-		answer.SetText(fmt.Sprintf("(+) %f\n(-) %f\n(*) %f\n(/) %f\n", sum, sub, mul, div))
+		result.SetText(fmt.Sprintf("%s customer %s ordered: %s.", selectedGender, username, parsedSelectedFoods))
 	})
 
-	w.SetContent(container.NewVBox(container.NewVBox(
-		label1,
-		entry1,
-		label2,
-		entry2,
+	w.SetContent(container.NewVBox(
+		title,
+		nameLabel,
+		name,
+		foodLabel,
+		food,
+		genderLabel,
+		gender,
 		btn,
-		answer,
-	)))
+		result,
+	))
 
 	w.ShowAndRun()
 }
