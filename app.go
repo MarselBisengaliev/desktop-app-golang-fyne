@@ -1,22 +1,22 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(1200, 600))
+	w.Resize(fyne.NewSize(300, 300))
 
-	img1 := canvas.NewImageFromFile("icon.png")
-	label := widget.NewLabel("Picture")
+	color := color.NRGBA{R: 57, G: 8, B: 137, A: 255}
+	label := canvas.NewText("Color", color)
 
-	w.SetContent(container.NewGridWithColumns(2,  img1, label))
+	w.SetContent(label)
 
 	w.ShowAndRun()
 }
