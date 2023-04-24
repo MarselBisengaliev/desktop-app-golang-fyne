@@ -1,32 +1,22 @@
 package main
 
 import (
-	"fmt"
-	"net/url"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
 	a := app.New()
-	w := a.NewWindow("Telegram account")
-	w.Resize(fyne.NewSize(300, 400))
+	w := a.NewWindow("Marsel App")
+	w.Resize(fyne.NewSize(1200, 600))
 
-	url, err := url.Parse("https://t.me/marsel_bisengaliev")
+	img1 := canvas.NewImageFromFile("icon.png")
+	label := widget.NewLabel("Picture")
 
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
-
-	link := widget.NewHyperlink("Write me!", url)
-
-	w.SetContent(container.NewVBox(
-		link,
-	))
+	w.SetContent(container.NewGridWithColumns(2,  img1, label))
 
 	w.ShowAndRun()
 }
