@@ -1,11 +1,11 @@
 package main
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/theme"
-	"fyne.io/fyne/v2/widget"
+	"fyne.io/fyne/v2/canvas"
 )
 
 func main() {
@@ -13,17 +13,17 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(500, 500))
 
-	btn1 := widget.NewButton("Set light theme", func() {
-		a.Settings().SetTheme(theme.LightTheme())
-	})
-	btn2 := widget.NewButton("Set dark theme", func() {
-		a.Settings().SetTheme(theme.DarkTheme())
-	})
+	res, err := fyne.LoadResourceFromURLString(
+		"https://dce0qyjkutl4h.cloudfront.net/wp-content/uploads/2020/11/Blog_Golang-use-cases.jpg",
+	)
 
-	btn_box := container.NewHBox(btn1, btn2)	
-	content := container.NewVBox(btn_box)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 
-	w.SetContent(content)
+	img := canvas.NewImageFromResource(res)
+
+	w.SetContent(img)
 
 	w.ShowAndRun()
 }
