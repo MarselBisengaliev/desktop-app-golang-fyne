@@ -1,6 +1,9 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
@@ -10,23 +13,29 @@ import (
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(550, 550))
+	w.Resize(fyne.NewSize(250, 250))
 
-	card1 := widget.NewCard(
-		"Marsel Blog",
-		"Hello! My name is Marsel, i am 18 years old, from KZ",
-		widget.NewButton("Like Marsel", func() {}),
-	)
+	label := widget.NewLabel("Notebook")
 
-	card2 := widget.NewCard(
-		"Title of Kek",
-		"desc of kek",
-		widget.NewButton("Kek me", func() {}),
-	)
+	entry := widget.NewMultiLineEntry()
+	entry.SetPlaceHolder("Enter here...")
 
-	row1 := container.NewVBox(card1, card2)
+	btn := widget.NewButton("Save", func() {
+		file, err := os.Create("info.txt")
 
-	w.SetContent(row1)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+
+		defer file.Close()
+
+		file.WriteString(entry.Text)
+	})
+
+	content := container.NewVBox(label, entry, btn)
+
+	w.SetContent(content)
 
 	w.ShowAndRun()
 }
