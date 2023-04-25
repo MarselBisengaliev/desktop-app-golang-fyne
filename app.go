@@ -5,7 +5,7 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
@@ -13,17 +13,17 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(500, 500))
 
-	res, err := fyne.LoadResourceFromURLString(
-		"https://dce0qyjkutl4h.cloudfront.net/wp-content/uploads/2020/11/Blog_Golang-use-cases.jpg",
-	)
+	ic, err := fyne.LoadResourceFromPath("icon.png")
 
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println(err.Error())	
+		return
 	}
 
-	img := canvas.NewImageFromResource(res)
-
-	w.SetContent(img)
+	w.SetIcon(ic)
+	a.SetIcon(ic)
+	
+	w.SetContent(widget.NewLabel("Marsel App"))
 
 	w.ShowAndRun()
 }
