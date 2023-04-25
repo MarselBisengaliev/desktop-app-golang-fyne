@@ -1,13 +1,9 @@
 package main
 
 import (
-	"image/color"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -16,48 +12,21 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(500, 500))
 
-	circle1 := canvas.NewCircle(color.NRGBA{70, 80, 163, 240})
-	circle1.StrokeColor = color.NRGBA{255, 0, 0, 255}
-	circle1.StrokeWidth = 3
+	btn1 := widget.NewButton("Button 1", func() {})
+	btn2 := widget.NewButton("Button 2", func() {})
+	btn3 := widget.NewButton("Button 3", func() {})
+	btn4 := widget.NewButton("Button 4", func() {})
 
-	rectangle1 := canvas.NewRectangle(color.NRGBA{17, 94, 6, 255})
-	rectangle1.StrokeColor = color.NRGBA{11, 23, 9, 255}
-	rectangle1.StrokeWidth = 3
+	label1 := widget.NewLabel("Label 1")
+	label2 := widget.NewLabel("Label 2")
+	label3 := widget.NewLabel("Label 3")
+	label4 := widget.NewLabel("Label 4")
 
-	line1 := canvas.NewLine(color.NRGBA{195, 0, 0, 255})
-	line1.StrokeWidth = 5
-
-	icon1 := widget.NewIcon(theme.FileIcon())
-
-	isToggle := false
-	btn := widget.NewButton("Click me", func() {
-		isToggle = !isToggle
-		
-		if isToggle {
-			rectangle1.Hide()
-			circle1.FillColor = color.NRGBA{45, 36, 36, 255}
-			circle1.StrokeWidth = 10
-
-			line1.StrokeWidth = 10
-			line1.StrokeColor = color.NRGBA{44, 24, 52, 255}
-
-			return
-		}
-
-		rectangle1.Show()
-
-		circle1.StrokeColor = color.NRGBA{255, 0, 0, 255}
-		circle1.StrokeWidth = 3
-
-		line1.StrokeColor = color.NRGBA{195, 0, 0, 255}
-		line1.StrokeWidth = 5
-	})
-
-	columns1 := container.NewGridWithColumns(2, circle1, rectangle1)
-	columns2 := container.NewGridWithColumns(2, line1, icon1)
-
-	content := container.NewGridWithRows(3, columns1, columns2, btn)
+	btn_box := container.NewHBox(btn1, btn2, btn3, btn4)	
+	label_box := container.NewHBox(label1, label2, label3, label4)
+	content := container.NewVBox(label_box, btn_box)
 
 	w.SetContent(content)
+
 	w.ShowAndRun()
 }
