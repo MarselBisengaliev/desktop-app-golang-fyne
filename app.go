@@ -1,29 +1,32 @@
 package main
 
 import (
-	"fmt"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(500, 500))
+	w.Resize(fyne.NewSize(550, 550))
 
-	ic, err := fyne.LoadResourceFromPath("icon.png")
+	card1 := widget.NewCard(
+		"Marsel Blog",
+		"Hello! My name is Marsel, i am 18 years old, from KZ",
+		widget.NewButton("Like Marsel", func() {}),
+	)
 
-	if err != nil {
-		fmt.Println(err.Error())	
-		return
-	}
+	card2 := widget.NewCard(
+		"Title of Kek",
+		"desc of kek",
+		widget.NewButton("Kek me", func() {}),
+	)
 
-	w.SetIcon(ic)
-	a.SetIcon(ic)
-	
-	w.SetContent(widget.NewLabel("Marsel App"))
+	row1 := container.NewVBox(card1, card2)
+
+	w.SetContent(row1)
 
 	w.ShowAndRun()
 }
