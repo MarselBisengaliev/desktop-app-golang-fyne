@@ -7,30 +7,20 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
-	"fyne.io/fyne/v2/widget"
 )
 
-func createColoredButton(c color.RGBA, b *widget.Button) *fyne.Container {
-	button := container.New(
-		layout.NewMaxLayout(),
+func createRectangle(color color.RGBA) *canvas.Rectangle {
+	rectangle := canvas.NewRectangle(color)
+	rectangle.SetMinSize(fyne.NewSize(400, 400))
 
-		b,
-		canvas.NewRectangle(c),
-	)
-
-	return button
+	return rectangle
 }
 
-func createImagedButton(img *canvas.Image, b *widget.Button) *fyne.Container {
-	button := container.New(
-		layout.NewMaxLayout(),
+func createImage(file string) *canvas.Image {
+	image := canvas.NewImageFromFile(file)
+	image.SetMinSize(fyne.NewSize(400, 400))
 
-		b,
-		img,
-	)
-
-	return button
+	return image
 }
 
 func main() {
@@ -38,30 +28,23 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(400, 400))
 
-	w.SetContent(
+	img1 := createImage("icon.png")
+	img2 := createImage("icon2.jpg")
+
+	rec1 := createRectangle(color.RGBA{79, 32, 106, 1})
+	rec2 := createRectangle(color.RGBA{157, 51, 51, 1})
+	rec3 := createRectangle(color.RGBA{118, 183, 39, 1})
+
+	scroll := container.NewVScroll(
 		container.NewVBox(
-			createColoredButton(
-				color.RGBA{90, 60, 90, 1},
-				widget.NewButton(
-					"Click!",
-					nil,
-				),
-			),
-			createColoredButton(
-				color.RGBA{146, 117, 86, 1},
-				widget.NewButton(
-					"LOL!",
-					nil,
-				),
-			),
-			createImagedButton(
-				canvas.NewImageFromFile("icon.png"),
-				widget.NewButton(
-					"KEK!",
-					nil,
-				),
-			),
+			img1,
+			img2,
+			rec1,
+			rec2,
+			rec3,
 		),
 	)
+
+	w.SetContent(scroll)
 	w.ShowAndRun()
 }
