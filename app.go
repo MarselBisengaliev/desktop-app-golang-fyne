@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"os"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 )
@@ -13,19 +11,29 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(400, 400))
 
-	fileItem1 := fyne.NewMenuItem("New File", func() { os.Create("file.txt") })
-	fileItem2 := fyne.NewMenuItem("Save", func() { fmt.Println("File Saved!") })
+	item1 := fyne.NewMenuItem("Actions", nil)
+	item2 := fyne.NewMenuItem("Say", nil)
 
-	menu1 := fyne.NewMenu("File", fileItem1, fileItem2)
+	item1.ChildMenu = fyne.NewMenu(
+		"",
+		fyne.NewMenuItem("Print", func() { fmt.Println("Printed") }),
+		fyne.NewMenuItem("Save", func() { fmt.Println("Saved") }),
+		fyne.NewMenuItem("Cut", func() { fmt.Println("Cuted") }),
+		fyne.NewMenuItem("Copy", func() { fmt.Println("Copied") }),
+		fyne.NewMenuItem("Open", func() { fmt.Println("Opened") }),
+	)
 
-	actionsItem1 := fyne.NewMenuItem("Hello", func() { fmt.Println("Hello from menu") })
-	actionsItem2 := fyne.NewMenuItem("Bye", func() { fmt.Println("Bye bye") })
-	actionsItem3 := fyne.NewMenuItem("Button", func() { fmt.Println("Clicked") })
+	item2.ChildMenu = fyne.NewMenu(
+		"",
+		fyne.NewMenuItem("Hi", func() { fmt.Println("Hello") }),
+		fyne.NewMenuItem("Bye", func() { fmt.Println("Bye bye") }),
+		fyne.NewMenuItem("Lol", func() { fmt.Println("Kek") }),
+	)
 
-	menu2 := fyne.NewMenu("Actions", actionsItem1, actionsItem2, actionsItem3)
+	menu := fyne.NewMenu("Buttons", item1, item2)
 
-	mainMenu := fyne.NewMainMenu(menu1, menu2)
-	w.SetMainMenu(mainMenu)
+	main := fyne.NewMainMenu(menu)
 
+	w.SetMainMenu(main)
 	w.ShowAndRun()
 }
