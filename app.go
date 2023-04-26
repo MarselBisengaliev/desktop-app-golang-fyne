@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
@@ -11,29 +11,51 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(400, 400))
 
-	item1 := fyne.NewMenuItem("Actions", nil)
-	item2 := fyne.NewMenuItem("Say", nil)
-
-	item1.ChildMenu = fyne.NewMenu(
-		"",
-		fyne.NewMenuItem("Print", func() { fmt.Println("Printed") }),
-		fyne.NewMenuItem("Save", func() { fmt.Println("Saved") }),
-		fyne.NewMenuItem("Cut", func() { fmt.Println("Cuted") }),
-		fyne.NewMenuItem("Copy", func() { fmt.Println("Copied") }),
-		fyne.NewMenuItem("Open", func() { fmt.Println("Opened") }),
+	card := widget.NewCard(
+		"Marsel GROUP",
+		"Read more about the user accept",
+		widget.NewAccordion(
+			widget.NewAccordionItem(
+				"Pargrapgh 1",
+				widget.NewAccordion(
+					widget.NewAccordionItem(
+						"Point 1",
+						widget.NewLabel("Info about point 1"),
+					),
+					widget.NewAccordionItem(
+						"Point 2",
+						widget.NewLabel("Info about point 2"),
+					),
+					widget.NewAccordionItem(
+						"Point 3",
+						widget.NewLabel("Info about point 3"),
+					),
+				),
+			),
+			widget.NewAccordionItem(
+				"Pargrapgh 2",
+				widget.NewAccordion(
+					widget.NewAccordionItem(
+						"Point 1",
+						widget.NewLabel("Info about point 1"),
+					),
+					widget.NewAccordionItem(
+						"Point 2",
+						widget.NewLabel("Info about point 2"),
+					),
+					widget.NewAccordionItem(
+						"Point 3",
+						widget.NewLabel("Info about point 3"),
+					),
+				),
+			),
+			widget.NewAccordionItem(
+				"More information",
+				widget.NewLabel("More information for user"),
+			),
+		),
 	)
 
-	item2.ChildMenu = fyne.NewMenu(
-		"",
-		fyne.NewMenuItem("Hi", func() { fmt.Println("Hello") }),
-		fyne.NewMenuItem("Bye", func() { fmt.Println("Bye bye") }),
-		fyne.NewMenuItem("Lol", func() { fmt.Println("Kek") }),
-	)
-
-	menu := fyne.NewMenu("Buttons", item1, item2)
-
-	main := fyne.NewMainMenu(menu)
-
-	w.SetMainMenu(main)
+	w.SetContent(card)
 	w.ShowAndRun()
 }
