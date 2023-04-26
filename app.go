@@ -1,17 +1,36 @@
 package main
 
 import (
+	"image/color"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
 
-func createText() *widget.Label {
-	text := widget.NewLabel("Irure occaecat voluptate consectetur exercitation veniam quis cillum laborum. Eiusmod laboris officia qui mollit nulla ipsum. Commodo enim eiusmod Lorem tempor nulla occaecat duis exercitation. Proident enim voluptate exercitation id.")
-	text.Wrapping = fyne.TextWrapBreak
+func createColoredButton(c color.RGBA, b *widget.Button) *fyne.Container {
+	button := container.New(
+		layout.NewMaxLayout(),
 
-	return text
+		b,
+		canvas.NewRectangle(c),
+	)
+
+	return button
+}
+
+func createImagedButton(img *canvas.Image, b *widget.Button) *fyne.Container {
+	button := container.New(
+		layout.NewMaxLayout(),
+
+		b,
+		img,
+	)
+
+	return button
 }
 
 func main() {
@@ -19,21 +38,30 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(400, 400))
 
-	title := widget.NewLabel("ORTHOGRAPHY")
-
-	rightLabel := widget.NewLabel("RIGHT")
-	wrongLabel := widget.NewLabel("WRONG")
-
-	rightText := createText()
-	wrongText := createText()
-
-	rightBox := container.NewVBox(rightLabel, rightText)
-	wrongBox := container.NewVBox(wrongLabel, wrongText)
-
-	split := container.NewHSplit(rightBox, wrongBox)
-
-	content := container.NewVBox(title, split)
-
-	w.SetContent(content)
+	w.SetContent(
+		container.NewVBox(
+			createColoredButton(
+				color.RGBA{90, 60, 90, 1},
+				widget.NewButton(
+					"Click!",
+					nil,
+				),
+			),
+			createColoredButton(
+				color.RGBA{146, 117, 86, 1},
+				widget.NewButton(
+					"LOL!",
+					nil,
+				),
+			),
+			createImagedButton(
+				canvas.NewImageFromFile("icon.png"),
+				widget.NewButton(
+					"KEK!",
+					nil,
+				),
+			),
+		),
+	)
 	w.ShowAndRun()
 }
