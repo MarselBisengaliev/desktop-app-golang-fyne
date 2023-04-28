@@ -12,30 +12,11 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(400, 400))
 
-	label := widget.NewLabel("")
-
-	sel := widget.NewSelectEntry(
-		[]string{
-			"Option 1",
-			"Option 2",
-			"Option 3",
-			"Option 4",
-			"Option 5",
-		},
-	)
-
-	sel.PlaceHolder = "Choose one or enter custom option"
-
-	btn := widget.NewButton("Get Data", func() {
-		label.SetText("You chose " + sel.Text)
+	label := widget.NewLabel("Some text here...")
+	btn := widget.NewButton("Change visibility", func() {
+		label.Hidden = !label.Hidden
 	})
 
-	w.SetContent(
-		container.NewVBox(
-			sel,
-			btn,
-			label,
-		),
-	)
+	w.SetContent(container.NewVBox(btn, label))
 	w.ShowAndRun()
 }
