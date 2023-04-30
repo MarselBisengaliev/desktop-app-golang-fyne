@@ -1,11 +1,9 @@
 package main
 
 import (
-	"errors"
-
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -14,34 +12,26 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(500, 500))
 
-	btn := widget.NewButton("Click me", func() {
+	entry := widget.NewMultiLineEntry()
+	btn := widget.NewButton("Show the text!", func() {
+		label := widget.NewLabel(entry.Text)
+		label.Wrapping = fyne.TextWrapBreak
 
-		dialog.ShowCustomConfirm(
-			"Say to me true",
-			"Absolutely yes",
-			"Are you kidding me?",
-			widget.NewLabel("Do you love me?"),
-			func(isLove bool) {
-				if isLove {
-					dialog.ShowInformation(
-						"I love you too!",
-						"You're the best",
-						w,
-					)
-					return
-				}
+		w2 := a.NewWindow("Window 2")
+		w2.Resize(fyne.NewSize(500, 500))
 
-				dialog.ShowError(
-					errors.New("you can't say nothing other than YES"),
-					w,
-				)
-
-				dialog.ShowCustom("Do you understand?", "I got it", widget.NewLabel("You need to say Yes"), w)
-			},
-			w,
+		w2.SetContent(
+			container.NewVScroll(
+				label,
+			),
 		)
+		w2.Show()
 	})
 
-	w.SetContent(btn)
-	w.ShowAndRun()
+	w.SetContent(
+		container.NewVBox(entry, btn),
+	)
+	w.Show()
+	w.SetMaster()
+	a.Run()
 }
