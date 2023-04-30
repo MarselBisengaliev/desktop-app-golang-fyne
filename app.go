@@ -1,37 +1,44 @@
 package main
 
 import (
+	"fmt"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/layout"
 	"fyne.io/fyne/v2/widget"
 )
+
+func createCenterLayout(widget fyne.Widget) *fyne.Container {
+	c := container.New(
+		layout.NewCenterLayout(),
+		widget,
+	)
+
+	return c
+}
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(500, 500))
 
-	entry := widget.NewMultiLineEntry()
-	btn := widget.NewButton("Show the text!", func() {
-		label := widget.NewLabel(entry.Text)
-		label.Wrapping = fyne.TextWrapBreak
-
-		w2 := a.NewWindow("Window 2")
-		w2.Resize(fyne.NewSize(500, 500))
-
-		w2.SetContent(
-			container.NewVScroll(
-				label,
-			),
-		)
-		w2.Show()
+	l := widget.NewLabel("Label")
+	e := widget.NewEntry()
+	b := widget.NewButton("Button", func() {
+		fmt.Println(e.Text)
 	})
 
+	cl := createCenterLayout(l)
+	ce := createCenterLayout(e)
+	cb := createCenterLayout(b)
+
 	w.SetContent(
-		container.NewVBox(entry, btn),
+		container.NewVBox(
+			cl,
+			ce,
+			cb,
+		),
 	)
-	w.Show()
-	w.SetMaster()
-	a.Run()
+	w.ShowAndRun()
 }
