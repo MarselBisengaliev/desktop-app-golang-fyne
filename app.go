@@ -1,34 +1,47 @@
 package main
 
 import (
-	"fmt"
+	"errors"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(400, 400))
+	w.Resize(fyne.NewSize(500, 500))
 
-	names := []string{"John", "Kate", "Denis", "Andrew", "Rostik"}
+	btn := widget.NewButton("Click me", func() {
 
-	list := widget.NewList(
-		func() int {
-			return len(names)
-		},
-		func() fyne.CanvasObject {
-			return widget.NewButton("Create item", func() {
-				fmt.Println("Hello")
-			})
-		},
-		func(id widget.ListItemID, obj fyne.CanvasObject) {
-			obj.(*widget.Button).SetText(names[id])
-		},
-	)
+		dialog.ShowCustomConfirm(
+			"Say to me true",
+			"Absolutely yes",
+			"Are you kidding me?",
+			widget.NewLabel("Do you love me?"),
+			func(isLove bool) {
+				if isLove {
+					dialog.ShowInformation(
+						"I love you too!",
+						"You're the best",
+						w,
+					)
+					return
+				}
 
-	w.SetContent(list)
+				dialog.ShowError(
+					errors.New("you can't say nothing other than YES"),
+					w,
+				)
+
+				dialog.ShowCustom("Do you understand?", "I got it", widget.NewLabel("You need to say Yes"), w)
+			},
+			w,
+		)
+	})
+
+	w.SetContent(btn)
 	w.ShowAndRun()
 }
