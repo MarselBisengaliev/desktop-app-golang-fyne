@@ -1,11 +1,12 @@
 package main
 
 import (
-	"fmt"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -14,36 +15,28 @@ func main() {
 	w := a.NewWindow("Marsel App")
 	w.Resize(fyne.NewSize(500, 500))
 
-	title := widget.NewLabel("Rate the work of our application from 0 to 10")
-	label := widget.NewLabel("Give your feedback about our application here!")
-	entry := widget.NewEntry()
-	entry.PlaceHolder = "I love..."
 
-	label.Hide()
-	entry.Hide()
+	pb := widget.NewProgressBarInfinite()
+	pb.Hide()
 
-	slider := widget.NewSlider(0, 10)
-	btn := widget.NewButton("Send feedback", func() {
-		text := fmt.Sprintf("You're rate our application as	%.0f.\nYour feedback: %s", slider.Value, entry.Text)
-		fmt.Println(text)
+	title := widget.NewLabel("CREATE POST")
+
+	postTitle := widget.NewEntry()
+	postTitle.SetPlaceHolder("Your post title")
+
+	postText := widget.NewEntry()
+	postText.SetPlaceHolder("Your post text")
+
+	submit := widget.NewButton("Submit", func() {	
+		pb.Show()
+		time.Sleep(time.Second * 3)
+		pb.Hide()
+
+		dialog.ShowInformation("Post creation", "You have created an post", w)
 	})
-	btn.Hide()
-
-	slider.OnChanged = func(value float64) {
-		label.Show()
-		entry.Show()
-		btn.Show()
-	}
-
 
 	w.SetContent(
-		container.NewVBox(
-			title,
-			slider,
-			label,
-			entry,
-			btn,
-		),
+		container.NewVBox(pb, title, postTitle, postText, submit),
 	)
 	w.Show()
 	a.Run()
