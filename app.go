@@ -1,31 +1,35 @@
 package main
 
-import (	
-	"io"
-
+import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
 	a := app.New()
 	w := a.NewWindow("Marsel App")
-	w.Resize(fyne.NewSize(800, 500))
+	w.Resize(fyne.NewSize(500, 500))
 
-	entry := widget.NewMultiLineEntry()
+	evaluations := [][]string{
+		{"John", "12", "12", "12"},
+		{"Andrew", "11", "11", "11"},
+		{"Kate", "10", "10", "10"},
+	}
 
-	btn := widget.NewButton("Open window", func() {
-		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
-			io.WriteString(uc, entry.Text)
-		}, w)
-	})
-
-	w.SetContent(
-		container.NewVBox(entry, btn),
+	table := widget.NewTable(
+		func() (int, int) {
+			return len(evaluations), len(evaluations[0])
+		},
+		func() fyne.CanvasObject {
+			return widget.NewLabel("Default text")
+		},
+		func(tci widget.TableCellID, co fyne.CanvasObject) {
+			co.(*widget.Label).SetText(evaluations[tci.Row][tci.Col])
+		},
 	)
+
+	w.SetContent(table)
 	w.Show()
 	a.Run()
 }
