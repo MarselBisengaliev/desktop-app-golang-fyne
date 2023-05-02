@@ -1,1 +1,1 @@
-# goolang
+# Golang Fyne App

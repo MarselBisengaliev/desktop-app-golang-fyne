@@ -1,7 +1,6 @@
 package main
 
-import (
-	"fmt"
+import (	
 	"io"
 
 	"fyne.io/fyne/v2"
@@ -17,26 +16,16 @@ func main() {
 	w.Resize(fyne.NewSize(800, 500))
 
 	entry := widget.NewMultiLineEntry()
-	entry.Resize(fyne.NewSize(600, 300))
-	entry.Move(fyne.NewPos(100, 135))
 
-	btn := widget.NewButton("Open file", func() {
-		dialog.ShowFileOpen(func(uc fyne.URIReadCloser, err error) {
-			if err != nil {
-				fmt.Println(err.Error())
-				return
-			}
-
-			data, _ := io.ReadAll(uc)
-			entry.SetText(string(data))
+	btn := widget.NewButton("Open window", func() {
+		dialog.ShowFileSave(func(uc fyne.URIWriteCloser, err error) {
+			io.WriteString(uc, entry.Text)
 		}, w)
 	})
-	btn.Resize(fyne.NewSize(150, 75))
-	btn.Move(fyne.NewPos(325, 30))
 
-	cont := container.NewWithoutLayout(entry, btn)
-
-	w.SetContent(container.NewVBox(cont))
+	w.SetContent(
+		container.NewVBox(entry, btn),
+	)
 	w.Show()
 	a.Run()
 }
